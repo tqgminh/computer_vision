@@ -123,11 +123,12 @@ def cal_mean_region(n_img, regions):
     return mean_region
 
 
-def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000, grow_threshold=0.1):
+def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000, grow_threshold=0.05):
     # region growing on the selected seeds
     idx = 0
     last = len(seeds)
-    moves = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+    moves = [[1, 0], [0, 1], [-1, 0], [0, -1],
+             [1, 1], [1, -1], [-1, 1], [-1, -1]]
     [H, W, _] = n_img.shape
 
     for n in range(max_iter):
@@ -138,7 +139,7 @@ def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000,
             x = seed[0]
             y = seed[1]
             label = labels[x, y]
-            p1 = mean_region[label]
+            p1 = n_img[x, y]
 
             for move in moves:
                 xx = x + move[0]
@@ -167,6 +168,20 @@ def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000,
     return labels, regions, mean_region, seeds
 
 
+def merge(region1, region2, mean_region1, mean_region2):
+    l1 = len(region1)
+    l2 = len(region2)
+    p1 = mean_region1
+    p2 = mean_region2
+
+    mean_region1 = np.add(p1 * l1, p2 * l2) / (l1 + l2)
+    region1 = [*region1, *region2]
+    mean_region2 = np.zeros(3)
+    region2 = []
+
+    return region1, region2, mean_region1, mean_region2
+
+
 def noise_region_merging(regions, mean_region, noise_merge_threshold):
     num_regions = len(regions)
     emp_row = []
@@ -177,20 +192,17 @@ def noise_region_merging(regions, mean_region, noise_merge_threshold):
                 assign_label = 1
                 m = 100000
                 p1 = mean_region[i]
-                for j in range(i+1, num_regions):
-                    if len(regions[j]) > 0:
+                for j in range(1, num_regions):
+                    if len(regions[j]) > 0 and j != i:
                         d = distance(p1, mean_region[j])
                         if d < m:
                             m = d
                             assign_label = j
-                p2 = mean_region[assign_label]
-                l1 = len(regions[i])
-                l2 = len(regions[assign_label])
-                mean_region[i] = np.add(p1 * l1, p2 * l2) / (l1 + l2)
-                regions[i] = [*regions[i], *regions[assign_label]]
-                mean_region[assign_label] = np.zeros(3)
-                regions[assign_label] = []
-                emp_row.append(j)
+
+                # print(assign_label)
+                regions[assign_label], regions[i], mean_region[assign_label], mean_region[i] = merge(
+                    regions[assign_label], regions[i], mean_region[assign_label], mean_region[i])
+                emp_row.append(i)
 
     while [] in regions:
         regions.remove([])
@@ -209,19 +221,15 @@ def nearby_region_merging(regions, mean_region, nearby_merge_threshold=0.1):
         if len(regions[i]) == 0:
             continue
         else:
-            for j in range(i+1, num_regions):
-                if len(regions[j]) == 0:
+            for j in range(1, num_regions):
+                if len(regions[j]) == 0 or j == i:
                     continue
                 else:
                     p1 = mean_region[i]
                     p2 = mean_region[j]
                     if distance(p1, p2) < nearby_merge_threshold:
-                        l1 = len(regions[i])
-                        l2 = len(regions[j])
-                        mean_region[i] = np.add(p1 * l1, p2 * l2) / (l1 + l2)
-                        regions[i] = [*regions[i], *regions[j]]
-                        mean_region[j] = np.zeros(3)
-                        regions[j] = []
+                        regions[i], regions[j], mean_region[i], mean_region[j] = merge(
+                            regions[i], regions[j], mean_region[i], mean_region[j])
                         emp_row.append(j)
 
     while [] in regions:
@@ -230,6 +238,40 @@ def nearby_region_merging(regions, mean_region, nearby_merge_threshold=0.1):
     mean_region = np.delete(mean_region, emp_row, axis=0)
 
     print("Nearby region merging is done!")
+
+    return regions, mean_region
+
+
+def merging(regions, mean_region):
+    while len(regions) > 5:
+        num_regions = len(regions)
+        min_region = 1
+        len_min_region = 1000000
+        for i in range(1, num_regions):
+            if len_min_region < len(regions[i]):
+                len_min_region = len(regions[i])
+                min_region = i
+
+        assign_label = 1
+        m = 100000
+        p1 = mean_region[min_region]
+        for j in range(1, num_regions):
+            if len(regions[j]) > 0 and j != min_region:
+                d = distance(p1, mean_region[j])
+                if d < m:
+                    m = d
+                    assign_label = j
+
+        regions[min_region], regions[assign_label], mean_region[min_region], mean_region[assign_label] = merge(
+            regions[min_region], regions[assign_label], mean_region[min_region], mean_region[assign_label])
+        # emp_row.append(assign_label)
+
+        while [] in regions:
+            regions.remove([])
+
+        mean_region = np.delete(mean_region, assign_label, axis=0)
+
+    #print("Noise region merging is done!")
 
     return regions, mean_region
 

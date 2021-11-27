@@ -24,7 +24,7 @@ bgr_img = cv2.imread(str(img_path))
 # convert BGR color space to HSV color space
 hsv_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2HSV)
 
-hsv_img = np.array(hsv_img)
+hsv_img = np.array(bgr_img)
 n_img = hsv_img/np.max(hsv_img)
 [H, W, C] = hsv_img.shape  # get shape of image
 
@@ -42,7 +42,7 @@ labels, regions, mean_region, seeds = region_growing(
 
 regions, mean_region = nearby_region_merging(regions, mean_region)
 
-regions, mean_region = noise_region_merging(regions, mean_region, H*W/150)
+regions, mean_region = noise_region_merging(regions, mean_region, H*W/25)
 
 labels, regions = assign_label(labels, regions)
 
