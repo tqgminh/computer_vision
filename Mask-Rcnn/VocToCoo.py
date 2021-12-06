@@ -115,7 +115,13 @@ if __name__ == "__main__":
     # rootDir = "annotations/xmls"
     # train_attrDict = generateVOC2Json(rootDir, trainXMLFiles,"train.json")
     # test_attrDict = generateVOC2Json(rootDir, testXMLFiles,"test.json")
-    with open("test.json","r") as jf:
-        data = json.load(jf)
+    # with open("test.json","r") as jf:
+    #     data = json.load(jf)
     
-    print(data.keys())    
+    image_mask = cv2.imread("/home/viethoang/Downloads/annotations/trimaps/Abyssinian_1.png")
+    image_mask = np.where(image_mask==3, 1, image_mask)
+    image_mask = np.where(image_mask==2, 0, image_mask)
+    image_mask = image_mask.astype('uint8')
+    segmask = mask.encode(np.asarray(image_mask, order="F"))
+    xmin, xmax, ymin, ymax = mask_to_bbox(image_mask[:, :, 0])
+    print(segmask)
