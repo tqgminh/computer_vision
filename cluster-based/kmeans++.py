@@ -46,7 +46,7 @@ def stop_training(centers, new_centers, eps):
     return total_dist < eps
 
 
-def kmeans(X, k, method=None):
+def kmeans_clustering(X, k, method='kmeans++'):
     if method == 'kmeans':
         centers = init_centers(X, k)
     elif method == 'kmeans++':
@@ -64,6 +64,22 @@ def kmeans(X, k, method=None):
     return centers, label
 
 
+def kmeans(src_path, dst_path, k=3):
+    img = cv2.imread(src_path)
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    X = img.reshape(-1, 3)
+
+    center, label = kmeans_clustering(X, k)
+    new_center = np.array([[0, 0, 0],
+                           [255, 0, 0],
+                           [255, 255, 255]])
+    predicted_mask = new_center[label]
+    predicted_mask = predicted_mask.reshape(img.shape)
+    predicted_mask = np.array(predicted_mask)
+    cv2.imwrite(dst_path, predicted_mask)
+
+
+"""
 def visualize(image, predicted_mask):
 
     figure, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 4))
@@ -77,9 +93,10 @@ def visualize(image, predicted_mask):
     ax[1].set_axis_off()
 
     plt.show()
-
+"""
 
 if __name__ == '__main__':
+    """
     images_directory = os.path.join('images')
     image_filenames = sorted(os.listdir(images_directory))
 
@@ -104,4 +121,6 @@ if __name__ == '__main__':
         predicted_mask = predicted_mask.reshape(img.shape) / 255.0
 
         visualize(img, predicted_mask)
+    """
 
+    kmeans('test_original\Abyssinian_31.jpg', 'cluster-based/res.jpg')
