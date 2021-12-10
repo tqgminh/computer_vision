@@ -64,16 +64,13 @@ def kmeans_clustering(X, k, method='kmeans++'):
     return centers, label
 
 
-def kmeans(src_path, dst_path, k=3):
+def kmeans(src_path, dst_path, k):
     img = cv2.imread(src_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     X = img.reshape(-1, 3)
 
     center, label = kmeans_clustering(X, k)
-    new_center = np.array([[0, 0, 0],
-                           [255, 0, 0],
-                           [255, 255, 255]])
-    predicted_mask = new_center[label]
+    predicted_mask = center[label]
     predicted_mask = predicted_mask.reshape(img.shape)
     predicted_mask = np.array(predicted_mask)
     cv2.imwrite(dst_path, predicted_mask)
