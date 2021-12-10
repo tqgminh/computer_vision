@@ -64,7 +64,7 @@ def kmeans_clustering(X, k, method='kmeans++'):
     return centers, label
 
 
-def kmeans(src_path, dst_path, k):
+def kmeans(src_path, dst_path, k=2):
     img = cv2.imread(src_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     X = img.reshape(-1, 3)
@@ -120,4 +120,4 @@ if __name__ == '__main__':
         visualize(img, predicted_mask)
     """
 
-    kmeans('test_original\Abyssinian_31.jpg', 'cluster-based/res.jpg')
+    kmeans('images/Abyssinian_31.jpg', 'cluster-based/res.jpg')

@@ -12,7 +12,7 @@ def region_based(src_path, dst_path):
     [original_h, original_w, C] = bgr_img.shape
     img = np.array(bgr_img)
     #img = cv2.resize(img, (256, 256))
-    n_img = img/np.max(img)
+    n_img = img/255
     [H, W, C] = img.shape  # get shape of image
 
     similarity, similar_threshold = cal_similarity(img)
@@ -31,8 +31,9 @@ def region_based(src_path, dst_path):
 
     regions, mean_region = noise_region_merging(regions, mean_region, H*W/25)
 
-    labels, regions = assign_label(labels, regions)
+    labeled_img = assign_label(regions, mean_region, H, W, C)
 
+    """
     label_hue = np.uint8(179*labels/np.max(labels))
     blank_ch = 255*np.ones_like(label_hue)
     labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
@@ -42,9 +43,9 @@ def region_based(src_path, dst_path):
     labeled_img[label_hue == 0] = 0
 
     #labeled_img = cv2.resize(labeled_img, (original_w, original_h))
-
+    """
     cv2.imwrite(dst_path, labeled_img)
 
 
 if __name__ == '__main__':
-    region_based('test_original\Abyssinian_31.jpg', 'region-based/res.jpg')
+    region_based('images/Abyssinian_31.jpg', 'region-based/res.jpg')

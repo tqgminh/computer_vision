@@ -276,14 +276,19 @@ def merging(regions, mean_region):
     return regions, mean_region
 
 
-def assign_label(labels, regions):
+def assign_label(regions, mean_region, H, W, C):
+    mask = np.zeros((H, W, C))
     for i in range(len(regions)):
         for seed in regions[i]:
             x = seed[0]
             y = seed[1]
-            labels[x, y] = i
+            mask[x, y, 0] = mean_region[i][0]
+            mask[x, y, 1] = mean_region[i][1]
+            mask[x, y, 2] = mean_region[i][2]
+    mask = mask*255
+    mask = mask.astype(np.int8)
     print(len(regions))
-    return labels, regions
+    return mask
 
 
 """
