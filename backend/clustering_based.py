@@ -158,5 +158,5 @@ def mean_shift(src_path, dst_path):
 
 if __name__ == '__main__':
 
-    kmeans('Abyssinian_31.jpg', 'cluster-based/kmeans_res.jpg')
+    kmeans('dog.jpg', 'cluster-based/kmeans_res.jpg')
     mean_shift('Abyssinian_31.jpg', 'cluster-based/mean_shift_res.jpg')
