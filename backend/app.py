@@ -6,7 +6,9 @@ import imghdr
 from clustering_based import kmeans, mean_shift
 from region_based import auto_seeded_region_growing
 from unet import unet
-# from infer import inference
+from maskrcnn import mask_rcnn
+
+
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 app.config['UPLOAD_EXTENSIONS'] = ['.jpg', '.png', '.gif']
@@ -47,7 +49,7 @@ def upload_files():
             abort(400)
         dst = os.path.join(app.config['UPLOAD_PATH'], filename)
         uploaded_file.save(dst)
-        inference(dst, app.config['ANNOTATION_PATH'])
+        unet(dst, app.config['ANNOTATION_PATH'] + '/res.jpg')
         annotations = os.path.join(app.config['ANNOTATION_PATH'], filename)
         print(annotations)
         return render_template("upload.html", filename=filename, annotations=annotations)

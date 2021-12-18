@@ -273,7 +273,7 @@ def auto_seeded_region_growing(src_path, dst_path):
 
     [original_h, original_w, C] = bgr_img.shape
     img = np.array(bgr_img)
-    #img = cv2.resize(img, (256, 256))
+    img = cv2.resize(img, (256, 256))
     n_img = img/255
     [H, W, C] = img.shape  # get shape of image
     similarity, similar_threshold = cal_similarity(img)
@@ -295,10 +295,10 @@ def auto_seeded_region_growing(src_path, dst_path):
 
     labeled_img[label_hue == 0] = 0
 
-    #labeled_img = cv2.resize(labeled_img, (original_w, original_h))
+    labeled_img = cv2.resize(labeled_img, (original_w, original_h))
 
     cv2.imwrite(dst_path, labeled_img)
 
 
 if __name__ == '__main__':
-    auto_seeded_region_growing('Abyssinian_2.jpg', 'region-based/res.jpg')
+    auto_seeded_region_growing('dog.jpg', 'region-based/res.jpg')

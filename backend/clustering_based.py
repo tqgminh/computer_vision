@@ -69,7 +69,7 @@ def kmeans_clustering(X, k, method='kmeans++'):
     return centers, label
 
 
-def kmeans(src_path, dst_path, k=2):
+def kmeans(src_path, dst_path, k=4):
     img = cv2.imread(src_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     X = img.reshape(-1, 3)
@@ -159,4 +159,4 @@ def mean_shift(src_path, dst_path):
 if __name__ == '__main__':
 
     kmeans('dog.jpg', 'cluster-based/kmeans_res.jpg')
-    mean_shift('Abyssinian_31.jpg', 'cluster-based/mean_shift_res.jpg')
+    mean_shift('dog.jpg', 'cluster-based/mean_shift_res.jpg')
