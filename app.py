@@ -4,7 +4,7 @@ import cv2
 from clustering_based.algorithms import kmeans, mean_shift
 from region_based.algorithms import auto_seeded_region_growing
 from mask_rcnn.model import mask_rcnn_segmentation
-from unet.model import unet_segmentation
+from Unet.model import unet_segmentation
 
 app = Flask(__name__)
 
