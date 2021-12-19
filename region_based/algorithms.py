@@ -242,14 +242,17 @@ def nearby_region_merging(regions, mean_region, nearby_merge_threshold=0.1):
     return regions, mean_region
 
 
-def assign_label(regions, H, W):
+def assign_label(regions, H, W, bgr_img):
 
-    mask = np.zeros((H, W))
+    mask = np.zeros((H, W, 3))
     for i in range(len(regions)):
+        first_seed = regions[i][0]
+        color = bgr_img[first_seed[0], first_seed[1]]
         for seed in regions[i]:
             x = seed[0]
             y = seed[1]
-            mask[x, y] = i
+            mask[x, y] = color
+    print(len(regions))
     return mask
 
 
@@ -271,15 +274,15 @@ def auto_seeded_region_growing(src_path):
         n_img, labels, regions, seeds, mean_region)
     regions, mean_region = nearby_region_merging(regions, mean_region)
     regions, mean_region = noise_region_merging(regions, mean_region, H*W/25)
-    labels = assign_label(regions, H, W)
+    labeled_img = assign_label(regions, H, W, img)
 
-    label_hue = np.uint8(179*labels/np.max(labels))
-    blank_ch = 255*np.ones_like(label_hue)
-    labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
+    # label_hue = np.uint8(179*labels/np.max(labels))
+    # blank_ch = 255*np.ones_like(label_hue)
+    # labeled_img = cv2.merge([label_hue, blank_ch, blank_ch])
 
-    labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
+    # labeled_img = cv2.cvtColor(labeled_img, cv2.COLOR_HSV2BGR)
 
-    labeled_img[label_hue == 0] = 0
+    # labeled_img[label_hue == 0] = 0
 
     labeled_img = cv2.resize(labeled_img, (original_w, original_h))
 
@@ -287,4 +290,4 @@ def auto_seeded_region_growing(src_path):
 
 
 if __name__ == '__main__':
-    auto_seeded_region_growing('dog.jpg', 'region-based/res.jpg')
+    auto_seeded_region_growing('static/upload/cat.jpg')

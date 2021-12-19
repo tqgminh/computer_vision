@@ -11,11 +11,12 @@
 	<meta charset=utf-8 />
 </head>
 <body>
-  <h2 style="padding: 10px;">Result</h2>
-  <div>
+	<h2 style="padding: 10px;">Result</h2>
+	<div>
 		<img style="padding: 10px;" id="img-area" src="{{ img_path }}" alt="Upload" />
-    <img style="padding: 10px;" id="img-area" src="{{ res_path }}" alt="Result" />
+		<img style="padding: 10px;" id="img-area" src="{{ res_path }}" alt="Result" />
 	</div>
-  <button style="margin-left: 10px;" onclick="history.back()">Go Back</button>
+	<div style="margin: 10px;">Note: {{ note }}</div>
+	<button style="margin-left: 10px;" onclick="history.back()">Go Back</button>
 </body>
 </html>

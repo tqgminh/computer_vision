@@ -39,25 +39,31 @@ def uploader():
 
             method = request.form['method']
             res_img = 0
+            note = ""
             if method == 'kmeans':
                 numofclus = request.form['nums']
                 numofclus = int(numofclus)
                 res_img = kmeans(img_path, numofclus)
+                note = "K-mean clustering with " + str(numofclus) + "clusters"
             elif method == 'meanshift':
                 res_img = mean_shift(img_path)
+                note = "Mean shift clustering"
             elif method == 'regiongrowing':
                 res_img = auto_seeded_region_growing(img_path)
+                note = "Region growing"
             elif method == 'unet':
                 res_img = unet_segmentation(img_path)
+                note = "Unet segmentation, green: dog, red: cat"
             elif method == 'maskrcnn':
                 res_img = mask_rcnn_segmentation(img_path)
+                note = "Mask-RCNN segmentation"
             else:
                 return render_template("index.html")
 
             res_path = app.config['ANNOTATION_FOLDER'] + "/" + file_name
             cv2.imwrite(res_path, res_img)
 
-            return render_template("result.html", res_path=res_path, img_path=img_path)
+            return render_template("result.html", res_path=res_path, img_path=img_path, note=note)
 
     except:
         return render_template("index.html")
