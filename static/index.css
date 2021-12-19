@@ -1,7 +1,16 @@
-.import-img img{
-	display: block;
-  	max-width:5000px;
-  	max-height:4000px;
-  	width: auto;
-  	height: auto;
+.import-img {
+  padding: 5px;
+}
+
+.form {
+  padding: 5px;
+}
+
+.option {
+  padding-left: 10px;
+}
+
+#img-area {
+  max-width: 500px;
+  max-height: 500px;
 }

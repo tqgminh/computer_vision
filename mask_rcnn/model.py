@@ -1,6 +1,4 @@
-# You may need to restart your runtime prior to this, to let your installation take effect
 from detectron2.utils.visualizer import ColorMode
-import logging
 from detectron2.evaluation import COCOEvaluator
 import os
 from detectron2.engine import DefaultTrainer
@@ -10,12 +8,8 @@ from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 from detectron2 import model_zoo
 import cv2
-import numpy as np
-import detectron2
-from PIL import Image
 from detectron2.utils.logger import setup_logger
 setup_logger()
-# import some common libraries
 
 
 class CocoTrainer(DefaultTrainer):

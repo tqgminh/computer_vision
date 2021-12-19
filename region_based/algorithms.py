@@ -1,9 +1,6 @@
 import cv2
 import numpy as np
 
-import numpy as np
-import cv2
-
 
 def distance(point1, point2):
     s1 = point1.astype(np.float)

@@ -1,9 +1,6 @@
-from flask import Flask, render_template, request, redirect, send_from_directory, url_for
+from flask import Flask, render_template, request, redirect
 import os
 import cv2
-from PIL import Image
-import PIL
-import pathlib
 from clustering_based.algorithms import kmeans, mean_shift
 from region_based.algorithms import auto_seeded_region_growing
 from mask_rcnn.model import mask_rcnn_segmentation
@@ -40,11 +37,27 @@ def uploader():
             img_path = app.config['UPLOAD_FOLDER'] + "/" + file_name
             file.save(img_path)
 
-            res_img = mask_rcnn_segmentation(img_path)
+            method = request.form['method']
+            res_img = 0
+            if method == 'kmeans':
+                numofclus = request.form['nums']
+                numofclus = int(numofclus)
+                res_img = kmeans(img_path, numofclus)
+            elif method == 'meanshift':
+                res_img = mean_shift(img_path)
+            elif method == 'regiongrowing':
+                res_img = auto_seeded_region_growing(img_path)
+            elif method == 'unet':
+                res_img = unet_segmentation(img_path)
+            elif method == 'maskrcnn':
+                res_img = mask_rcnn_segmentation(img_path)
+            else:
+                return render_template("index.html")
+
             res_path = app.config['ANNOTATION_FOLDER'] + "/" + file_name
             cv2.imwrite(res_path, res_img)
 
-            return render_template("index.html", res_path=res_path, img_path=img_path)
+            return render_template("result.html", res_path=res_path, img_path=img_path)
 
     except:
         return render_template("index.html")

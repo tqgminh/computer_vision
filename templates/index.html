@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Phân đoạn ảnh</title>
-	<h1>Phân đoạn ảnh chó mèo</h1>
+	<title>Image Segmentation</title>
+	<h1 style="padding: 10px;">Cats and Dogs Segmentation</h1>
 	<link rel="stylesheet" type="text/css" href="../static/index.css">
 	<script type="text/javascript" src="../static/index.js"></script>
 	<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -12,17 +12,29 @@
 </head>
 <body>
 	<div class="import-img">
-		<form action = "" enctype = "multipart/form-data" method="POST">
+		<form action = "" enctype = "multipart/form-data" method="POST" class="form">
 			<input type="file" name="file" id="chooseFile" accept=".gif,.jpg,.jpeg,.png" onchange="readURL(this);">
-			<input type="submit" value="Submit">
+			<h2>Choose your option:</h2>
+			<div class="option" >
+				<input type="radio" id="kmeans" name="method" value="kmeans">
+				<label for="kmeans" onclick="showCluster()">K-means Clustering</label><br>
+				<div style="display: none; padding-left: 20px;" id="numofclus">
+					<div>Type number of clusters:</div>
+					<input type="number" id="nums" name="nums" value="nums">
+				</div>
+				<input type="radio" id="meanshift" name="method" value="meanshift">
+				<label for="meanshift" onclick="hideCluster()">Mean Shift Clustering</label><br>
+				<input type="radio" id="regiongrowing" name="method" value="regiongrowing">
+				<label for="regiongrowing" onclick="hideCluster()">Region Growing</label><br>
+				<input type="radio" id="unet" name="method" value="unet">
+				<label for="unet" onclick="hideCluster()">Unet Segmentation</label><br>
+				<input type="radio" id="maskrcnn" name="method" value="maskrcnn">
+				<label for="maskrcnn" onclick="hideCluster()">Mask-RCNN Segmentation</label><br>
+			</div>
+			<input type="submit" value="Submit" style="margin-left: 10px; margin-top: 20px;"/>
 		</form>
 		<br />
-		<br />
-		<br />
 		<img id="img-area" src="{{ img_path }}" alt="Tải ảnh lên" />
-	</div>
-	<div class="result">
-		<img id="img-area" src="{{ res_path }}" alt="Kết quả" />
 	</div>
 </body>
 </html>

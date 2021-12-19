@@ -9,4 +9,12 @@ function readURL(input) {
 
         reader.readAsDataURL(input.files[0]);
     }
-}	
+}
+
+function showCluster() {
+    document.getElementById("numofclus").style.display = "block";
+}
+
+function hideCluster() {
+    document.getElementById("numofclus").style.display = "none";
+}

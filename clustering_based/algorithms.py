@@ -1,8 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 import cv2
-import os
-import matplotlib.pyplot as plt
 
 
 def init_seeds(X, num_of_seeds):
