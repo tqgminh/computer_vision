@@ -30,7 +30,7 @@ class CocoTrainer(DefaultTrainer):
         return COCOEvaluator(dataset_name, cfg, False, output_folder)
 
 
-def mask_rcnn(img_path, save_path, device="cpu"):
+def mask_rcnn_segmentation(img_path, device="cpu"):
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file(
         "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
@@ -38,7 +38,7 @@ def mask_rcnn(img_path, save_path, device="cpu"):
     os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
 
     cfg.MODEL.WEIGHTS = "model/model_final.pth"
-    cfg.MODEL.DEVICE = "cpu"
+    cfg.MODEL.DEVICE = device
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.8
 
     predictor = DefaultPredictor(cfg)
@@ -57,9 +57,8 @@ def mask_rcnn(img_path, save_path, device="cpu"):
     v = v.draw_instance_predictions(outputs["instances"].to("cpu"))
 
     data = v.get_image()[:, :, ::-1]
-    img = Image.fromarray(data, 'RGB')
-    img.save(save_path)
+    return data
 
 
 if __name__ == '__main__':
-    mask_rcnn("dog.jpg", "mask-rcnn/res.jpg")
+    mask_rcnn_segmentation("cat.jpg")

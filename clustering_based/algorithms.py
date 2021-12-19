@@ -69,7 +69,7 @@ def kmeans_clustering(X, k, method='kmeans++'):
     return centers, label
 
 
-def kmeans(src_path, dst_path, k=4):
+def kmeans(src_path, k=4):
     img = cv2.imread(src_path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     X = img.reshape(-1, 3)
@@ -78,7 +78,8 @@ def kmeans(src_path, dst_path, k=4):
     predicted_mask = center[label]
     predicted_mask = predicted_mask.reshape(img.shape)
     predicted_mask = np.array(predicted_mask)
-    cv2.imwrite(dst_path, predicted_mask)
+
+    return predicted_mask
 
 
 def get_point_inside_seed(X, seed, bandwidth):
@@ -120,7 +121,7 @@ def eliminate_seed(shifted_seeds, bandwidth):
     return np.array(converged_seeds)
 
 
-def mean_shift(src_path, dst_path):
+def mean_shift(src_path):
     bandwidth = 40
     num_iters = 20
     threshold = 2
@@ -153,10 +154,10 @@ def mean_shift(src_path, dst_path):
 
     segmented_image = np.reshape(segmented_image, img.shape)
 
-    cv2.imwrite(dst_path, segmented_image)
+    return segmented_image
 
 
 if __name__ == '__main__':
 
-    kmeans('dog.jpg', 'cluster-based/kmeans_res.jpg')
-    mean_shift('dog.jpg', 'cluster-based/mean_shift_res.jpg')
+    kmeans('dog.jpg')
+    mean_shift('dog.jpg')

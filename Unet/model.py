@@ -1,9 +1,10 @@
+from os import name
 import cv2
 from tensorflow.keras.models import load_model
 import numpy as np
 
 
-def unet(src_path, dst_path):
+def unet_segmentation(src_path):
     img = cv2.imread(src_path, cv2.IMREAD_COLOR)
     H, W, _ = img.shape
     img = cv2.resize(img, (224, 224))
@@ -24,19 +25,18 @@ def unet(src_path, dst_path):
                 res[h, w, 0] = 0
                 res[h, w, 1] = 0
                 res[h, w, 2] = 255
-            elif mask[h, w] == 2:
+            elif mask[h, w] == 0:
                 res[h, w, 0] = 0
-                res[h, w, 1] = 0
-                res[h, w, 2] = 0
-            else:
-                res[h, w, 0] = 255
-                res[h, w, 1] = 0
+                res[h, w, 1] = 255
                 res[h, w, 2] = 0
 
-    labeled_img = cv2.resize(res, (W, H))
-    cv2.imwrite(dst_path, labeled_img)
+    img = img*255
+    img = cv2.addWeighted(img, 1, res, 0.4, 0)
+    labeled_img = cv2.resize(img, (W, H))
+
+    return labeled_img
 
 
 if __name__ == '__main__':
 
-    unet('dog.jpg', 'unet/res.jpg')
+    unet_segmentation('dogcat.png', 'unet/res.jpg')

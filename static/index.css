@@ -1,0 +1,7 @@
+.import-img img{
+	display: block;
+  	max-width:5000px;
+  	max-height:4000px;
+  	width: auto;
+  	height: auto;
+}

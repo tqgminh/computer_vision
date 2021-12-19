@@ -246,17 +246,6 @@ def nearby_region_merging(regions, mean_region, nearby_merge_threshold=0.1):
 
 
 def assign_label(regions, H, W):
-    # mask = np.zeros((H, W, C))
-    # for i in range(len(regions)):
-    #     for seed in regions[i]:
-    #         x = seed[0]
-    #         y = seed[1]
-    #         mask[x, y, 0] = mean_region[i][0]
-    #         mask[x, y, 1] = mean_region[i][1]
-    #         mask[x, y, 2] = mean_region[i][2]
-    # mask = mask*255
-    # mask = mask.astype(np.int8)
-    # print(len(regions))
 
     mask = np.zeros((H, W))
     for i in range(len(regions)):
@@ -267,7 +256,7 @@ def assign_label(regions, H, W):
     return mask
 
 
-def auto_seeded_region_growing(src_path, dst_path):
+def auto_seeded_region_growing(src_path):
     # read image to array
     bgr_img = cv2.imread(src_path)
 
@@ -297,7 +286,7 @@ def auto_seeded_region_growing(src_path, dst_path):
 
     labeled_img = cv2.resize(labeled_img, (original_w, original_h))
 
-    cv2.imwrite(dst_path, labeled_img)
+    return labeled_img
 
 
 if __name__ == '__main__':
