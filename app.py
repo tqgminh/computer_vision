@@ -44,7 +44,7 @@ def uploader():
                 numofclus = request.form['nums']
                 numofclus = int(numofclus)
                 res_img = kmeans(img_path, numofclus)
-                note = "K-mean clustering with " + str(numofclus) + "clusters"
+                note = "K-mean clustering with " + str(numofclus) + " clusters"
             elif method == 'meanshift':
                 res_img = mean_shift(img_path)
                 note = "Mean shift clustering"
