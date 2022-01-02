@@ -53,10 +53,10 @@ def uploader():
                 note = "Region growing"
             elif method == 'unet':
                 res_img = unet_segmentation(img_path)
-                note = "Unet segmentation, green: dog, red: cat"
+                note = "U-Net segmentation, green: dog, red: cat"
             elif method == 'maskrcnn':
                 res_img = mask_rcnn_segmentation(img_path)
-                note = "Mask-RCNN segmentation"
+                note = "Mask R-CNN segmentation"
             else:
                 return render_template("index.html")
 
