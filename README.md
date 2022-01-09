@@ -1,6 +1,6 @@
 # Cats and Dogs Segmentation
 
-In this project, we practice some methods for image segmentation problem with two class including cats and dogs. Our methods is based on two approachs which are Classical-based (K-Means, Mean Shift and Region Growing) and Deep Learning (U-Net and Mask R-CNN).
+In this project, we practice some methods for image segmentation with two class including cats and dogs. Our methods is based on two approachs which are Classical-based (K-Means, Mean Shift and Region Growing) and Deep Learning (U-Net and Mask R-CNN).
 
 Two deep learning model is trained on the Oxford-IIIT Pet data set. More info: https://www.robots.ox.ac.uk/~vgg/data/pets/
 
@@ -45,7 +45,7 @@ http://127.0.0.1:5000/
 
 # Usage
 
-There are 5 option to segment an image containing dogs anh cats.
+There are 5 option to segment an image containing dogs and cats.
 
 ![alt text](https://github.com/tqgminh/computer_vision/blob/main/images/options.png?raw=true)
 
