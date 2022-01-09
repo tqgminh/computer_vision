@@ -47,6 +47,16 @@ http://127.0.0.1:5000/
 
 There are 5 option to segment an image containing dogs anh cats.
 
-![alt text](Screenshot 2022-01-09 233628.png)
+![alt text](https://github.com/tqgminh/computer_vision/blob/main/images/options.png?raw=true)
 
-You can consider choosing `K-Means`, `Mean Shift` or `Region Growing` to clustering similar pixels in color. If you need to determine the pixels belonging to dogs or cats, let's choose `U-Net segmentation`. Furthermore, to distinguish cats and dogs instance, let's choose `Mask R-CNN segmentation`.
+You can consider choosing `K-Means`, `Mean Shift` or `Region Growing` to clustering similar pixels in color.
+
+![alt text](https://github.com/tqgminh/computer_vision/blob/main/images/kmeans.png?raw=true)
+
+If you need to determine the pixels belonging to dogs or cats, let's choose `U-Net segmentation`.
+
+![alt text](https://github.com/tqgminh/computer_vision/blob/main/images/unet.png?raw=true)
+
+Furthermore, to distinguish cats and dogs instance, let's choose `Mask R-CNN segmentation`.
+
+![alt text](https://github.com/tqgminh/computer_vision/blob/main/images/mask_rcnn.png?raw=true)
