@@ -1,16 +1,77 @@
-.import-img {
-  padding: 5px;
+.import-img,
+.result {
+  padding: 20px;
+  background-color: #fff;
+  margin-left: 60px;
+  margin-right: 60px;
+  border-radius: 20px;
 }
 
 .form {
   padding: 5px;
 }
-
+h2 {
+  padding-left: 60px;
+}
 .option {
-  padding-left: 10px;
+  padding-left: 50px;
 }
 
 #img-area {
   max-width: 500px;
   max-height: 500px;
+  margin-left: 50px;
+  /*
+  display:none;
+  */
+}
+#img-area-result {
+  max-width: 500px;
+  max-height: 500px;
+  padding: 20px;
+}
+
+body {
+  background-color: #eaf2f8;
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
+    helvetica neue, helvetica, Ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+}
+.header {
+  margin-left: 60px;
+  margin-right: 60px;
+  padding: 10px;
+}
+.title {
+  font-size: 32px;
+}
+.file-upload-btn {
+  padding: 15px;
+  background-color: #3b82f6;
+  margin-left: 50px;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.file-upload-btn span {
+  color: #fff;
+  font-weight: 500;
+}
+input[type="file"] {
+  display: none;
+}
+.submit-btn,
+.backbtn {
+  background-color: #3b82f6;
+  padding: 15px 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+.label {
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
 }

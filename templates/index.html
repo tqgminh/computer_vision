@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>Image Segmentation</title>
-	<h1 style="padding: 10px;">Cats and Dogs Segmentation</h1>
 	<link rel="stylesheet" type="text/css" href="../static/index.css">
 	<script type="text/javascript" src="../static/index.js"></script>
 	<link class="jsbin" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
@@ -11,27 +10,35 @@
 	<meta charset=utf-8 />
 </head>
 <body>
+	<head>
+		<div class="header">
+			<span class="title">Cats and Dogs segmentation</span>
+		</div>
+	</head>
 	<div class="import-img">
 		<form action = "" enctype = "multipart/form-data" method="POST" class="form">
+			<label for="chooseFile" class="file-upload-btn">
+				<span>Upload image</span>
+			</label>
 			<input type="file" name="file" id="chooseFile" accept=".gif,.jpg,.jpeg,.png" onchange="readURL(this);">
 			<h2>Choose your option:</h2>
 			<div class="option" >
 				<input type="radio" id="kmeans" name="method" value="kmeans">
-				<label for="kmeans" onclick="showCluster()">K-means Clustering</label><br>
+				<label for="kmeans" onclick="showCluster()" class="label">K-means Clustering</label><br>
 				<div style="display: none; padding-left: 20px;" id="numofclus">
 					<div>Type number of clusters:</div>
 					<input type="number" id="nums" name="nums" value="nums">
 				</div>
 				<input type="radio" id="meanshift" name="method" value="meanshift">
-				<label for="meanshift" onclick="hideCluster()">Mean Shift Clustering</label><br>
+				<label for="meanshift" onclick="hideCluster()" class="label">Mean Shift Clustering</label><br>
 				<input type="radio" id="regiongrowing" name="method" value="regiongrowing">
-				<label for="regiongrowing" onclick="hideCluster()">Region Growing and Merging</label><br>
+				<label for="regiongrowing" onclick="hideCluster()" class="label">Region Growing and Merging</label><br>
 				<input type="radio" id="unet" name="method" value="unet">
-				<label for="unet" onclick="hideCluster()">U-Net Segmentation</label><br>
+				<label for="unet" onclick="hideCluster()" class="label">U-Net Segmentation</label><br>
 				<input type="radio" id="maskrcnn" name="method" value="maskrcnn">
-				<label for="maskrcnn" onclick="hideCluster()">Mask R-CNN Segmentation</label><br>
+				<label for="maskrcnn" onclick="hideCluster()" class="label">Mask R-CNN Segmentation</label><br>
 			</div>
-			<input type="submit" value="Submit" style="margin-left: 10px; margin-top: 20px;"/>
+			<input type="submit" value="Submit" class="submit-btn"/>
 		</form>
 		<br />
 		<img id="img-area" src="{{ img_path }}" alt="Tải ảnh lên" />

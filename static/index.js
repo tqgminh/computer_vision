@@ -4,7 +4,8 @@ function readURL(input) {
 
         reader.onload = function (e) {
             $('#img-area')
-                .attr('src', e.target.result)                
+                .attr('src', e.target.result)   ; 
+            //$('#img-area').css("display", "block")   ;           
         };
 
         reader.readAsDataURL(input.files[0]);
