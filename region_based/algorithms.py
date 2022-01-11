@@ -5,9 +5,11 @@ import numpy as np
 def distance(point1, point2):
     s1 = point1.astype(np.float)
     s2 = point2.astype(np.float)
-    numerator = (s1[0]-s2[0]) * (s1[0]-s2[0]) + \
-                (s1[1]-s2[1]) * (s1[1]-s2[1]) + \
-                (s1[2]-s2[2]) * (s1[2]-s2[2])
+    numerator = (
+        (s1[0] - s2[0]) * (s1[0] - s2[0])
+        + (s1[1] - s2[1]) * (s1[1] - s2[1])
+        + (s1[2] - s2[2]) * (s1[2] - s2[2])
+    )
 
     return np.sqrt(numerator)
 
@@ -17,14 +19,14 @@ def cal_similarity(hsv_img):
     sigma = np.zeros([H, W])
     for h in range(H):
         for w in range(W):
-            min_x = max(0, h-1)
-            min_y = max(0, w-1)
-            max_x = min(H-1, h+1)
-            max_y = min(W-1, w+1)
+            min_x = max(0, h - 1)
+            min_y = max(0, w - 1)
+            max_x = min(H - 1, h + 1)
+            max_y = min(W - 1, w + 1)
             S = (max_x - min_x + 1) * (max_y - min_y + 1)
 
             # get 8 neightbors of the selected pixel
-            neighbor = hsv_img[min_x:max_x+1, min_y:max_y+1]
+            neighbor = hsv_img[min_x : max_x + 1, min_y : max_y + 1]
 
             # reshape to 2D array
             tmp = np.reshape(neighbor, newshape=(S, C))
@@ -36,16 +38,15 @@ def cal_similarity(hsv_img):
             sigma[h, w] = np.sum(sigma_neighbor)
 
     # normalize matrix in (0, 1)
-    sigma = sigma/np.max(sigma)
-    similarity = 1-sigma
+    sigma = sigma / np.max(sigma)
+    similarity = 1 - sigma
 
     # calculate threshold using the OTSU algorithm
-    bin_sim = np.round(similarity*255)  # convert to unsign 8-bit integer
+    bin_sim = np.round(similarity * 255)  # convert to unsign 8-bit integer
     bin_sim = bin_sim.astype(np.uint8)
-    threshold, _ = cv2.threshold(
-        bin_sim, 0, 255, cv2.THRESH_OTSU)  # get threshold
+    threshold, _ = cv2.threshold(bin_sim, 0, 255, cv2.THRESH_OTSU)  # get threshold
 
-    threshold = threshold/255  # threshold for condition 1
+    threshold = threshold / 255  # threshold for condition 1
 
     return similarity, threshold
 
@@ -55,14 +56,14 @@ def cal_max_distance(n_img):
     max_distance = np.zeros([H, W])
     for h in range(H):
         for w in range(W):
-            min_x = max(0, h-1)
-            min_y = max(0, w-1)
-            max_x = min(H-1, h+1)
-            max_y = min(W-1, w+1)
+            min_x = max(0, h - 1)
+            min_y = max(0, w - 1)
+            max_x = min(H - 1, h + 1)
+            max_y = min(W - 1, w + 1)
             S = (max_x - min_x + 1) * (max_y - min_y + 1)
 
             # get all neightbors of the selected pixel
-            neighbor = n_img[min_x:max_x+1, min_y:max_y+1]
+            neighbor = n_img[min_x : max_x + 1, min_y : max_y + 1]
 
             # reshape to 2D array
             tmp = np.reshape(neighbor, newshape=(S, C))
@@ -78,13 +79,18 @@ def cal_max_distance(n_img):
     return max_distance
 
 
-def select_seeds(height, width, similarity, max_distance, similar_threshold, maxdist_threshold=0.05):
+def select_seeds(
+    height, width, similarity, max_distance, similar_threshold, maxdist_threshold=0.05
+):
     # mark seed
     seeds = []
     labels = np.zeros([height, width], np.uint8)
     for h in range(height):
         for w in range(width):
-            if similarity[h, w] > similar_threshold and max_distance[h, w] < maxdist_threshold:
+            if (
+                similarity[h, w] > similar_threshold
+                and max_distance[h, w] < maxdist_threshold
+            ):
                 labels[h, w] = 1
                 seeds.append([h, w])
 
@@ -113,9 +119,9 @@ def cal_mean_region(n_img, regions):
             mr[2] += n_img[seed[0], seed[1], 2]
 
         l = len(region)
-        mr[0] = mr[0]/l
-        mr[1] = mr[1]/l
-        mr[2] = mr[2]/l
+        mr[0] = mr[0] / l
+        mr[1] = mr[1] / l
+        mr[2] = mr[2] / l
         mean_region.append(mr)
 
     mean_region = np.array(mean_region)
@@ -123,12 +129,13 @@ def cal_mean_region(n_img, regions):
     return mean_region
 
 
-def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000, grow_threshold=0.05):
+def region_growing(
+    n_img, labels, regions, seeds, mean_region, max_iter=1000000, grow_threshold=0.05
+):
     # region growing on the selected seeds
     idx = 0
     last = len(seeds)
-    moves = [[1, 0], [0, 1], [-1, 0], [0, -1],
-             [1, 1], [1, -1], [-1, 1], [-1, -1]]
+    moves = [[1, 0], [0, 1], [-1, 0], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]]
     [H, W, _] = n_img.shape
 
     for n in range(max_iter):
@@ -153,8 +160,9 @@ def region_growing(n_img, labels, regions, seeds, mean_region, max_iter=1000000,
                         labels[xx, yy] = label
                         seeds.append([xx, yy])
                         l = len(regions[label])
-                        mean_region[label] = np.add(
-                            mean_region[label]*l, p2) / (l + 1)
+                        mean_region[label] = np.add(mean_region[label] * l, p2) / (
+                            l + 1
+                        )
                         regions[label].append([xx, yy])
                         ctr = ctr + 1
 
@@ -200,8 +208,17 @@ def noise_region_merging(regions, mean_region, noise_merge_threshold):
                             assign_label = j
 
                 # print(assign_label)
-                regions[assign_label], regions[i], mean_region[assign_label], mean_region[i] = merge(
-                    regions[assign_label], regions[i], mean_region[assign_label], mean_region[i])
+                (
+                    regions[assign_label],
+                    regions[i],
+                    mean_region[assign_label],
+                    mean_region[i],
+                ) = merge(
+                    regions[assign_label],
+                    regions[i],
+                    mean_region[assign_label],
+                    mean_region[i],
+                )
                 emp_row.append(i)
 
     while [] in regions:
@@ -229,7 +246,8 @@ def nearby_region_merging(regions, mean_region, nearby_merge_threshold=0.1):
                     p2 = mean_region[j]
                     if distance(p1, p2) < nearby_merge_threshold:
                         regions[i], regions[j], mean_region[i], mean_region[j] = merge(
-                            regions[i], regions[j], mean_region[i], mean_region[j])
+                            regions[i], regions[j], mean_region[i], mean_region[j]
+                        )
                         emp_row.append(j)
 
     while [] in regions:
@@ -262,18 +280,20 @@ def auto_seeded_region_growing(src_path):
 
     [original_h, original_w, C] = bgr_img.shape
     img = np.array(bgr_img)
-    img = cv2.resize(img, (256, 256))
-    n_img = img/255
+    img = cv2.resize(img, (224, 224))
+    n_img = img / 255
     [H, W, C] = img.shape  # get shape of image
     similarity, similar_threshold = cal_similarity(img)
     max_distance = cal_max_distance(n_img)
     labels, regions, seeds = select_seeds(
-        H, W, similarity, max_distance, similar_threshold)
+        H, W, similarity, max_distance, similar_threshold
+    )
     mean_region = cal_mean_region(n_img, regions)
     labels, regions, mean_region, seeds = region_growing(
-        n_img, labels, regions, seeds, mean_region)
+        n_img, labels, regions, seeds, mean_region
+    )
     regions, mean_region = nearby_region_merging(regions, mean_region)
-    regions, mean_region = noise_region_merging(regions, mean_region, H*W/25)
+    regions, mean_region = noise_region_merging(regions, mean_region, H * W / 25)
     labeled_img = assign_label(regions, H, W, img)
 
     # label_hue = np.uint8(179*labels/np.max(labels))
@@ -289,5 +309,5 @@ def auto_seeded_region_growing(src_path):
     return labeled_img
 
 
-if __name__ == '__main__':
-    auto_seeded_region_growing('static/upload/cat.jpg')
+if __name__ == "__main__":
+    auto_seeded_region_growing("static/upload/cat.jpg")
