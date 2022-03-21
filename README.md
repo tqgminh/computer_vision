@@ -1,8 +1,8 @@
 # Cats and Dogs Segmentation
 
-In this project, we practice some methods for image segmentation with two class including cats and dogs. Our methods is based on two approachs which are Classical techniques (K-Means, Mean Shift and Region Growing) and Deep Learning (U-Net and Mask R-CNN). All methods are build in a web app based on Flask framework.
+In this project, we practice some methods for image segmentation with two class including cats and dogs. Our methods are based on two approachs which are Classical techniques (K-Means, Mean Shift and Region Growing) and Deep Learning (U-Net and Mask R-CNN). All methods are build in a web app based on Flask framework.
 
-Two deep learning models are trained on the Oxford-IIIT Pet dataset. More info and download at: https://www.robots.ox.ac.uk/~vgg/data/pets/
+Two deep learning models are trained on the Oxford-IIIT Pet dataset. More info and download this dataset at: https://www.robots.ox.ac.uk/~vgg/data/pets/
 
 # Installation
 
